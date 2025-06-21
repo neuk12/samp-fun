@@ -69,4 +69,20 @@ IntegerWithDelimiter(integer, const delimiter[] = ",") {
     return string;
 }
 
+stock IsPlayerInRange2D(playerid, targetid, Float:range)
+{
+    new Float:x1, y1, z1;
+    new Float:x2, y2, z2;
+
+    if (!IsPlayerConnected(playerid) || !IsPlayerConnected(targetid))
+        return 0;
+
+    GetPlayerPos(playerid, x1, y1, z1);
+    GetPlayerPos(targetid, x2, y2, z2);
+
+    new Float:dx = x2 - x1;
+    new Float:dy = y2 - y1;
+
+    return (floatsqrt(dx*dx + dy*dy) <= range) ? 1 : 0;
+}
 
