@@ -86,3 +86,16 @@ stock IsPlayerInRange2D(playerid, targetid, Float:range)
     return (floatsqrt(dx*dx + dy*dy) <= range) ? 1 : 0;
 }
 
+
+stock GenerateInviteCode(dest[], size)
+{
+    new const charset[] = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    new len = strlen(charset);
+
+    for (new i = 0; i < size - 1; i++)
+    {
+        dest[i] = charset[random(len)];
+    }
+    dest[size - 1] = '\0';
+}
+
