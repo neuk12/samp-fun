@@ -40,3 +40,33 @@ stock IsPlayerInRangeOfPlayer(playerid, targetid, Float:range)
 
     return (dist <= range) ? 1 : 0;
 }
+
+
+/**
+ * @brief Formatea un número entero agregando un delimitador cada 3 cifras.
+ *
+ * @param integer          El número entero a formatear.
+ * @param delimiter[]      (Opcional) El string a usar como delimitador. Por defecto es ",".
+ *
+ * @returns string         Devuelve un string con el número formateado.
+ *
+ * @note Si el número es negativo, el signo se mantiene al principio y no se le insertan separadores antes de él.
+ *
+ * @example
+ *    new str[24];
+ *    str = IntegerWithDelimiter(1234567);               // str = "1,234,567"
+ */
+IntegerWithDelimiter(integer, const delimiter[] = ",") {
+    new string[16];
+
+    format(string, sizeof string, "%i", integer);
+
+    for (new i = strlen(string) - 3, j = ((integer < 0) ? 1 : 0); i > j; i -= 3) {
+
+        strins(string, delimiter, i, sizeof string);
+    }
+
+    return string;
+}
+
+
