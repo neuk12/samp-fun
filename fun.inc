@@ -99,3 +99,35 @@ stock GenerateInviteCode(dest[], size)
     dest[size - 1] = '\0';
 }
 
+
+
+/**
+ * Reemplaza en el string todas las secuencias '\n' por el carácter de salto de línea real (0x0A).
+ * 
+ * @param string[] Cadena en la que se buscarán y reemplazarán las secuencias '\n'.
+ */
+stock ReplaceEscapedNewlines(string[])
+{
+    new len = strlen(string);  // Obtenemos la longitud actual de la cadena
+
+    // Recorremos la cadena hasta el penúltimo carácter
+    for (new i = 0; i < len - 1; i++)
+    {
+        // Verificamos si en la posición actual y la siguiente hay la secuencia '\' y 'n'
+        if (string[i] == '\\' && string[i+1] == 'n')
+        {
+            string[i] = 0x0A; // Reemplazamos '\' por el salto de línea real (ASCII 10)
+
+            // Desplazamos todos los caracteres posteriores un lugar hacia la izquierda
+            // para eliminar el carácter 'n' que queda tras reemplazar '\'
+            for (new j = i+1; j < len; j++)
+            {
+                string[j] = string[j+1];
+            }
+
+            len--; // Actualizamos la longitud ya que hemos eliminado un carácter
+            // Nota: No incrementamos i para no saltar el siguiente carácter tras el desplazamiento
+        }
+    }
+}
+
