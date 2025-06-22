@@ -102,8 +102,28 @@ stock GenerateInviteCode(dest[], size)
 
 
 /**
- * Reemplaza en el string todas las secuencias '\n' por el carácter de salto de línea real (0x0A).
+ * ReplaceEscapedNewlines
  * 
+ * Esta función reemplaza todas las secuencias '\n' (barra invertida + n)
+ * dentro de una cadena por un salto de línea real (código ASCII 0x0A).
+ * 
+ * 📌 Uso típico:
+ * Cuando se cargan textos desde una base de datos donde los saltos de línea
+ * se almacenan como '\n' (por ejemplo: '{FFFFFF}3\nProductos disponibles.'),
+ * esta función convierte esas secuencias en saltos reales para que se vean 
+ * correctamente en pantallas como:
+ * 
+ *  3
+ *  Productos disponibles.
+ * 
+ * en lugar de:
+ * 
+ *  3\nProductos disponibles.
+ *
+ * ⚠️ Importante:
+ * Para que funcione correctamente, en la base de datos debe estar guardado como `\n` 
+ *  si se inserta desde código SQL, para representar una barra invertida real.
+ *
  * @param string[] Cadena en la que se buscarán y reemplazarán las secuencias '\n'.
  */
 stock ReplaceEscapedNewlines(string[])
@@ -113,21 +133,20 @@ stock ReplaceEscapedNewlines(string[])
     // Recorremos la cadena hasta el penúltimo carácter
     for (new i = 0; i < len - 1; i++)
     {
-        // Verificamos si en la posición actual y la siguiente hay la secuencia '\' y 'n'
+        // Si encontramos '\' seguido de 'n'
         if (string[i] == '\\' && string[i+1] == 'n')
         {
-            string[i] = 0x0A; // Reemplazamos '\' por el salto de línea real (ASCII 10)
+            string[i] = 0x0A; // Reemplazamos '\' por salto de línea real
 
-            // Desplazamos todos los caracteres posteriores un lugar hacia la izquierda
-            // para eliminar el carácter 'n' que queda tras reemplazar '\'
+            // Desplazamos todos los caracteres a la izquierda desde la posición 'n'
             for (new j = i+1; j < len; j++)
             {
                 string[j] = string[j+1];
             }
 
-            len--; // Actualizamos la longitud ya que hemos eliminado un carácter
-            // Nota: No incrementamos i para no saltar el siguiente carácter tras el desplazamiento
+            len--; // Reducimos la longitud ya que eliminamos un carácter
         }
     }
 }
+
 
